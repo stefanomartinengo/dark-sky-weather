@@ -1,9 +1,18 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
-import Subwrapper from './styles/Subwrapper';
-import ForecastHeader from './styles/ForecastHeader';
-import {SidebarMain, SidebarElements} from './styles/ForecastHeaderSidebar';
-import { IconContainer, IconWrapper, HomepageSubDiv, HomepageDiv } from './styles/IconContainer';
+import { WeeklyForecast } from './WeeklyForecast';
+import Subwrapper from './styles/WrapperContent';
+import {
+  HaydayMain,
+  Hayday,
+  HaydayHeader,
+  TemperatureDetailsMain,
+  TemperatureDetailsElement,
+  IconMain,
+  Icon,
+  ForecastMain,
+  WeatherDiv,
+  WeatherSubDiv } from './styles/HomepageContent';
 
 interface State {
   lat?: number;
@@ -16,25 +25,30 @@ interface State {
   visibility?: number;
   darkSkyIcon?: string;
   fetchingState?: boolean;
+  weeklyForecast?: object;
 }
 
 export class HomePage extends React.Component<{}, State> {
-constructor(props:any) {
-  super(props);
-
-}
-    public state: State = {
-      lat: 32,
-      lng: -41,
+  constructor(props:any) {
+    super(props);
+    this.greatDayForHay = this.greatDayForHay.bind(this);
+  }
+  public state: State = {
+    lat: 0,
+    lng: 0,
+    summary: '',
+    temperature: 0,
+    wind: 0,
+    humidity: 0,
+    visibility: 0,
+    summary_hourly: '',
+    darkSkyIcon: 'planet-earth',
+    fetchingState: true,
+    weeklyForecast: {
       summary: '',
-      temperature: 0,
-      wind: 0,
-      humidity: 0,
-      visibility: 0,
-      summary_hourly: '',
-      darkSkyIcon: 'planet-earth',
-      fetchingState: true
+      data: []
     }
+  }
 
     componentDidMount = () => {
 
@@ -54,7 +68,9 @@ constructor(props:any) {
     };
     getPosition();
     var fetchWeather = () => {
-      fetch(`https://cors.io/?https://api.darksky.net/forecast/460f6001173b06e5a3c01f1c30cf60df/${this.state.lat},${this.state.lng}`)
+      var chicago = '41.881832,-87.623177';
+      var apiKey = '2641106b5602141c883cbc0840a05dd7';
+      fetch(`https://cors.io/?https://api.darksky.net/forecast/${apiKey}/${this.state.lat},${this.state.lng}`)
       .then( response => {
         response.json().then( (data) => {
           this.setState({
@@ -65,12 +81,27 @@ constructor(props:any) {
             visibility: data.currently.visibility,
             summary_hourly: data.hourly.summary,
             darkSkyIcon: data.currently.icon,
+            weeklyForecast: data.daily,
             fetchingState: false
           });
         })
       });
     };
   };
+  greatDayForHay = () => {
+    var almostNotWorth = "It\'s almost not worth thinkin about";
+    var bundleUp = "Better bundle up";
+    var dayForHay = "It\'s a great day for hay!"
+
+    let temperature = this.state.temperature;
+    if(temperature! > 50) {
+      return dayForHay;
+    } else if(temperature! <= 30) {
+      return bundleUp;
+    } else {
+      return almostNotWorth;
+    }
+  }
 
   public render() {
     const {
@@ -84,21 +115,29 @@ constructor(props:any) {
       humidity,
       darkSkyIcon,
     } = this.state;
-    // const { isFetching } = this.props;
     return (
       <Subwrapper>
-        <SidebarMain>
-          <SidebarElements> Wind: { wind } </SidebarElements>
-          <SidebarElements> Humidity: { humidity } </SidebarElements>
-          <SidebarElements> Visibility: { visibility } + mi </SidebarElements>
-        </SidebarMain>
-        <ForecastHeader>
-          <IconWrapper>
-            <IconContainer isFetching={ this.state.fetchingState || false } src={require(`./../assets/${darkSkyIcon}.png`)}></IconContainer>
-          </IconWrapper>
-            <HomepageDiv> { temperature!.toString().split('').slice(0,2)}<span>&#176;</span> { summary } </HomepageDiv>
-            <HomepageSubDiv> { summary_hourly } </HomepageSubDiv>
-        </ForecastHeader>
+        <TemperatureDetailsMain>
+          <TemperatureDetailsElement> Wind: { wind } </TemperatureDetailsElement>
+          <TemperatureDetailsElement> Humidity: { humidity } </TemperatureDetailsElement>
+          <TemperatureDetailsElement> Visibility: { visibility } + mi </TemperatureDetailsElement>
+        </TemperatureDetailsMain>
+        <ForecastMain>
+          <Icon>
+            <IconMain isFetching={ this.state.fetchingState || false } src={require(`./../assets/${darkSkyIcon}.png`)}></IconMain>
+          </Icon>
+          <WeatherDiv> 
+            { temperature!.toString().split('').slice(0,2)}<span>&#176;</span> { summary } 
+          </WeatherDiv>
+          <WeatherSubDiv> { summary_hourly } </WeatherSubDiv>
+        </ForecastMain>
+        <HaydayMain>
+          <HaydayHeader> Hayday? </HaydayHeader>
+          <Hayday>
+            {this.greatDayForHay()}
+          </Hayday>
+        </HaydayMain>
+        <WeeklyForecast weeklyForecast={this.state.weeklyForecast}/>
       </Subwrapper>
     )
   }
