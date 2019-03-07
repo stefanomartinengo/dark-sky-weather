@@ -10,11 +10,11 @@ import {
     WeeklyWeatherBar } from './styles/HomepageContent';
 
 interface State {
-    weeklyForecastWithDates?: any;
+    weeklyForecastWithDates: any;
 }
 
 interface Props {
-    weeklyForecast?: any;
+    weeklyForecast: any;
 }
 
 export class WeeklyForecast extends React.Component<Props, State> {

@@ -17,15 +17,15 @@ import {
 interface State {
   lat?: number;
   lng?: number;
-  summary?: string;
-  summary_hourly?: string;
-  temperature?: number;
-  wind?: number;
-  humidity?: number;
-  visibility?: number;
-  darkSkyIcon?: string;
-  fetchingState?: boolean;
-  weeklyForecast?: object;
+  summary: string;
+  summary_hourly: string;
+  temperature: number;
+  wind: number;
+  humidity: number;
+  visibility: number;
+  darkSkyIcon: string;
+  fetchingState: boolean;
+  weeklyForecast: object;
 }
 
 export class HomePage extends React.Component<{}, State> {

@@ -5,7 +5,7 @@ interface State {
 }
 
 interface Props {
-    dayToLoad?: any
+    dayToLoad: any
 }
 
 export default class DailyForecast extends React.Component<Props, {}> {
