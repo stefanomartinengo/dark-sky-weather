@@ -1,5 +1,11 @@
 import React from 'react';
-import { DailyWeatherTile, DailyWeatherTileIcon, DailyWeatherTileMinMaxMain, TileMain, MaxTempDiv, MinTempDiv, TempDivSubheader, TempDivHeader } from './styles/HomepageContent';
+import {
+    DailyWeatherTile,
+    DailyWeatherTileIcon,
+    DailyWeatherTileMinMaxMain,
+    TileMain, MaxTempDiv, MinTempDiv,
+    TempDivSubheader,
+    TempDivHeader } from './styles/HomepageContent';
 
 interface State {
 }
