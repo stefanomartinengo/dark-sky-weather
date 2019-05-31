@@ -121,7 +121,6 @@ export const WeatherWeeklyMain = styled.div`
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    margin-top: 175px;
 `;
 
 export const WeatherWeeklyBody = styled.div`
