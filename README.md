@@ -9,3 +9,8 @@ SETUP
 2: Make sure browser location is turned on <br />
     ** I did not build a catch otherwise <br />
 3: NPM START
+
+TODO
+-------------------
+
+1: Update API key
